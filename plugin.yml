@@ -1,0 +1,13 @@
+name: Gungame
+version: 1.0
+author : zOnlyKroks
+main: de.zOnlyKroks.Gungame.Gungame
+commands:
+   build:
+      description: Allows you to build in the arena.
+      usage: /<command>
+   check:
+      description: Allows you to go invisible.
+      usage: /<command> 
+   
+   
