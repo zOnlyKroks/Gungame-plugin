@@ -1,12 +1,13 @@
 package de.zOnlyKroks.Gungame;
 
-import org.bukkit.scoreboard.Objective;
-import org.bukkit.scoreboard.Scoreboard;
-import org.bukkit.scoreboard.Team;
-import org.bukkit.scoreboard.DisplaySlot;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
+import org.bukkit.scoreboard.DisplaySlot;
+import org.bukkit.scoreboard.Objective;
+import org.bukkit.scoreboard.Scoreboard;
+import org.bukkit.scoreboard.Team;
+
 
 public class GunGameScoreBoard {
 	
@@ -84,4 +85,5 @@ public class GunGameScoreBoard {
         kd = (double)(Math.round(100.0 * kd) / 100L);
         return kd;
     }
+	
 }

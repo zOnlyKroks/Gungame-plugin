@@ -1,73 +1,62 @@
-
 package de.zOnlyKroks.Gungame.Listeners;
 
+import org.bukkit.GameMode;
+import org.bukkit.Material;
+import org.bukkit.enchantments.Enchantment;
+import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
+import org.bukkit.event.entity.PlayerDeathEvent;
+import org.bukkit.event.player.PlayerRespawnEvent;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
 import de.zOnlyKroks.Gungame.Gungame;
 
-import org.bukkit.enchantments.Enchantment;
-import org.bukkit.Material;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.event.player.PlayerRespawnEvent;
-import org.bukkit.event.EventHandler;
-import org.bukkit.entity.Player;
-import org.bukkit.event.entity.PlayerDeathEvent;
-import org.bukkit.event.Listener;
-
-public class PlayerDeathListener implements Listener
-{
-    @EventHandler
-    public void onDeath(PlayerDeathEvent event) {
-        if (!(event.getEntity() instanceof Player && event.getEntity() != null)) {
-            return;
-        }
-        
+public class PlayerDeathListener implements Listener{
+	
+	@EventHandler
+	  public void onDeath(PlayerDeathEvent event) {
+	    if (!(event.getEntity() instanceof Player) || event.getEntity() == null)
+	      return; 
 	    event.setDeathMessage(null);
-        
-        event.setDroppedExp(0);
-        event.setKeepInventory(true);
-        Player player = event.getEntity();
-        Player killer = player.getKiller();
-      
-        String id = player.getUniqueId().toString();
-        int wert = Gungame.database.get(id, "Deaths");
-        Gungame.database.set(id, "Deaths", wert + 1);
-        
-        if(killer != null) {
-        String id2 = killer.getUniqueId().toString();
-        int wert2 = Gungame.database.get(id2, "Kills");
-        Gungame.database.set(id2, "Kills", wert2 + 1);
-        }else {
-        	return;
-        }
-        
-        killer.setLevel(killer.getLevel() + 1);
-        
-        if (player.getLevel() == 7) {
-            return;
-        }
-        if (player.getLevel() != 1) {
-            event.setNewLevel(player.getLevel() - 1);
-            player.setLevel(player.getLevel() - 1);
-        }
-        if (player.getLevel() == 0) {
-            player.setLevel(1);
-        }
-        if (player.getLevel() == 0) {
-            player.giveExpLevels(1);
-        }
-        if (player.getLevel() == 1) {
-            event.setNewLevel(1);
-            player.setLevel(1);
-        }
-        checkKit(player);
-        checkKit(killer);
-    }
-    
-    @EventHandler
-    public void onRespawn(PlayerRespawnEvent event) {
-        checkKit(event.getPlayer());
-    }
+	    event.setDroppedExp(0);
+	    event.setKeepInventory(true);
+	    Player player = event.getEntity();
+	    Player killer = player.getKiller();
+	    String id = player.getUniqueId().toString();
+	    int wert = Gungame.database.get(id, "Deaths");
+	    Gungame.database.set(id, "Deaths", wert + 1);
+	    if (killer != null) {
+	      String id2 = killer.getUniqueId().toString();
+	      int wert2 = Gungame.database.get(id2, "Kills");
+	      Gungame.database.set(id2, "Kills", wert2 + 1);
+	      killer.setLevel(killer.getLevel() + 1);
+	      checkKit(killer);
+	      if (killer.getLevel() == 8) {
+	        event.setNewLevel(7);
+	        killer.setLevel(7);
+	        return;
+	      } 
+	    } 
+	    if (player.getLevel() == 8) {
+	      event.setNewLevel(7);
+	      player.setLevel(7);
+	      return;
+	    } 
+	    event.setNewLevel(player.getLevel() - 1);
+	    player.setLevel(player.getLevel() - 1);
+	    if (player.getLevel() == 0) {
+	      event.setNewLevel(1);
+	      player.setLevel(1);
+	    } 
+	  }
+	  
+	  @EventHandler
+	  public void onRespawn(PlayerRespawnEvent event) {
+	    checkKit(event.getPlayer());
+	    event.getPlayer().setGameMode(GameMode.ADVENTURE);
+	  }
     
     public static void checkKit(Player player) {
         player.getInventory().clear();
@@ -220,4 +209,5 @@ public class PlayerDeathListener implements Listener
             player.getInventory().setBoots(armor4);
         }
     }
+	
 }
