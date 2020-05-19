@@ -15,25 +15,32 @@ public class Gungame extends JavaPlugin implements Listener{
 	
 public static MySQL database;
     
-    public void onEnable() {
+public void onEnable() {
+    	plugin = this;
         System.out.println("Das Plugin wurde aktiviert");
         Bukkit.getPluginManager().registerEvents(this, this);
         Bukkit.getPluginManager().registerEvents(new PlayerDeathListener(), this);
         Bukkit.getPluginManager().registerEvents(new PlayerWaterListener(), this);
         Bukkit.getPluginManager().registerEvents(new JoinQuitListener(), this);
+        Bukkit.getPluginManager().registerEvents(new SpawnProtectionListener(), this);
         this.getCommand("build").setExecutor(new BuildCommand());
         this.getCommand("check").setExecutor(new CheckCommand());
-        Gungame.database = new MySQL("Serveradresse", 3306, "Benutzername", "Benutzername", "Password");
+        Gungame.database = new MySQL("85.209.51.238", 3306, "mc19", "mc19", "54e0401cdc");
         counter();
-	    
-	FileConfiguration config = Gungame.getPlugin().getConfig();
+        
+        FileConfiguration config = Gungame.getPlugin().getConfig();
         if(!config.contains("Spawnschutz")) {
-        	config.set("Spawnschutz", 8);
+        	config.set("Breite + Länge", 8);
+        	config.set("Höhe", 8);
         	Gungame.getPlugin().saveConfig();
         }else {
         	return;
         }
     }
+    
+    public static Gungame getPlugin() {
+		return plugin;
+	}
     
     public void onDisable() {
         System.out.println("Das Plugin wurde deaktiviert");
